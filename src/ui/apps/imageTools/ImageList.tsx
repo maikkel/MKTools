@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useRef } from "react";
-import { Button, Layout, List, Upload } from "antd";
+import {Button, Layout, List, Tooltip, Upload} from "antd";
 import { RcFile } from "antd/es/upload";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 interface ImageListProps {
   setListData: Dispatch<SetStateAction<string[]>>;
@@ -21,7 +21,6 @@ export default function ImageList({
 
   const handleUpload = (file: RcFile, fileList: RcFile[]) => {
     addCount.current++;
-    console.log(file);
     if (!listData.includes(file.path)) {
       if (file.type.startsWith("image")) {
         setListData((prevState) => {
@@ -36,16 +35,15 @@ export default function ImageList({
     }
 
     if (addCount.current === fileList.length) {
-      console.log("done, " + addCount.current);
       let statusText = `Total ${addCount.current} new files`;
       statusText += addCountAdded.current
         ? `, ${addCountAdded.current} added`
         : "";
       statusText += addCountDuplicate.current
-        ? `, ${addCountDuplicate.current} duplicates ignored`
+        ? `, ${addCountDuplicate.current} duplicates omitted`
         : "";
       statusText += addCountWrongFormat.current
-        ? `, ${addCountWrongFormat.current} non images ignored`
+        ? `, ${addCountWrongFormat.current} non images omitted`
         : "";
       setStatus(statusText);
 
@@ -66,16 +64,31 @@ export default function ImageList({
           multiple={true}
           showUploadList={false}
         >
-          <Button
-            className="upload-button"
-            size="small"
-            type="primary"
-            icon={<PlusOutlined />}
-          >
-            Add Files
-          </Button>
+
+          <Tooltip placement="right" title="select image files from your hard drive">
+            <Button
+              className="upload-button"
+              size="small"
+              type="primary"
+              icon={<PlusOutlined />}
+            >
+              Add Files
+            </Button>
+          </Tooltip>
         </Upload>
         or drag and drop in area below
+        <Tooltip placement="left" title="clear list">
+          <Button
+              className="delete-button"
+              size="small"
+              type="primary"
+              danger
+              onClick={() => {
+                setListData([])
+              }}
+              icon={<DeleteOutlined />}
+          />
+        </Tooltip>
       </Layout.Header>
 
       <Layout.Content className="list-container">

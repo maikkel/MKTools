@@ -25,7 +25,7 @@ export default function Header({ setNav }: HeaderProps) {
   return (
     <Layout.Header id="header">
       <Layout>
-        <Layout.Sider width={300} className="logo-container">
+        <Layout.Sider width={250} className="logo-container">
           <img src={logo} className="logo" alt="logo" />
           <span className="logo-text">TOOLS</span>
         </Layout.Sider>

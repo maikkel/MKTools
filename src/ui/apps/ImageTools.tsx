@@ -11,7 +11,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
 
   return (
     <Layout id="image-tools">
-      <Layout.Sider width={300}>Sider 1</Layout.Sider>
+      <Layout.Sider width={250}>Sider 1</Layout.Sider>
       <Layout>
         <ImageList
           setListData={setListData}
@@ -19,7 +19,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
           setStatus={setStatus}
         />
       </Layout>
-      <Layout.Sider width={400}>Sider 2</Layout.Sider>
+      <Layout.Sider width={300}>Sider 2</Layout.Sider>
     </Layout>
   );
 }
