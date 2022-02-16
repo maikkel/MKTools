@@ -1,0 +1,48 @@
+
+#image-tools {
+  .header {
+    padding: 0 10px;
+    background: #111111;
+    .upload-button {
+      margin-right: 10px;
+    }
+  }
+  .list-container {
+    overflow: auto;
+    .dragger {
+      .ant-upload {
+        padding: 0;
+        .ant-upload-drag-container {
+          display: block;
+          vertical-align: top;
+        }
+      }
+    }
+
+    .list {
+      border: none;
+      .ant-list-header{
+        width: 100%;
+        background: $header-gradient;
+        border: 1px solid black;
+        position: sticky;
+        padding: 0 10px;
+        height: 24px;
+        line-height: 20px;
+        text-align: left;
+        font-weight: bold;
+      }
+      .list-item {
+        user-select: none;
+        background: #111111;
+        border: none;
+        &:nth-child(even) {
+          background: #161616;
+        }
+        &.active-list-item {
+          background: $primary-color;
+        }
+      }
+    }
+  }
+}

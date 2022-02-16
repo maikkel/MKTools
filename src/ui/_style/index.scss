@@ -1,0 +1,28 @@
+@import "variables";
+@import "mixins";
+
+body {
+  height: 100vh;
+  overflow: auto;
+
+  *::-webkit-scrollbar {
+    width: 15px;               /* width of the entire scrollbar */
+  }
+
+  *::-webkit-scrollbar-track {
+    background: black;        /* color of the tracking area */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: $header-active-gradient;  /* color of the scroll thumb */
+    border: 2px solid black;  /* creates padding around scroll thumb */
+  }
+  *::-webkit-scrollbar-corner {
+    background: black;  /* color of the scroll thumb */
+  }
+}
+
+@import "src/ui/MkTools";
+@import "src/ui/layout/Header";
+@import "src/ui/layout/Footer";
+@import "src/ui/apps/ImageTools";

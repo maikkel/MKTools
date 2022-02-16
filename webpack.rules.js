@@ -29,12 +29,45 @@ module.exports = [
   {
     test: /\.s[ac]ss$/i,
     use: [
-      // Creates `style` nodes from JS strings
       "style-loader",
-      // Translates CSS into CommonJS
-      "css-loader",
-      // Compiles Sass to CSS
-      "sass-loader",
+      {
+        loader: "css-loader",
+        options: {
+          sourceMap: true,
+        },
+      },
+      {
+        loader: "sass-loader",
+        options: {
+          sourceMap: true,
+        },
+      },
+    ],
+  },
+  {
+    test: /\.less$/i,
+    use: [{
+      loader: "style-loader"
+    }, {
+      loader: "css-loader"
+    }, {
+      loader: "less-loader",
+      options: {
+        lessOptions: {
+          javascriptEnabled: true
+        }
+      }
+    }],
+  },
+  {
+    test: /\.(png|jp(e*)g|svg|gif)$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          name: 'images/[hash]-[name].[ext]',
+        },
+      },
     ],
   },
 ];

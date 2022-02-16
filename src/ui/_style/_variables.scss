@@ -1,0 +1,6 @@
+$primary-color: #1c584a;
+
+$header-gradient: linear-gradient(#444444, #222222);
+$header-active-gradient: linear-gradient(lighten($primary-color, 8%), darken($primary-color, 8%));
+$header-hover-gradient: linear-gradient(lighten($primary-color, 16%), $primary-color);
+$footer-gradient: linear-gradient(#000000, #000000);

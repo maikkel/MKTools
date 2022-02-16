@@ -1,0 +1,33 @@
+
+#header {
+  padding: 0;
+  background: black;
+  margin: 1px 0;
+  .logo-container {
+    padding: 0 20px;
+    height: 42px;
+    background-image: $header-gradient;
+    .logo {
+      width: 30px;
+      vertical-align: top;
+      margin-top: 6px;
+    }
+    .logo-text {
+      margin-left: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  }
+  .menu {
+    background-image: $header-gradient;
+  }
+  .button {
+    user-select: none;
+    &.ant-menu-item-selected {
+      background: $header-active-gradient;
+    }
+    &:hover {
+      background: linear-gradient(lighten($primary-color, 16%), $primary-color);
+    }
+  }
+}
