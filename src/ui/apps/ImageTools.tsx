@@ -8,6 +8,7 @@ interface ImageToolsProps {
 
 export default function ImageTools({ setStatus }: ImageToolsProps) {
   const [listData, setListData] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
   return (
     <Layout id="image-tools">
@@ -17,9 +18,12 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
           setListData={setListData}
           listData={listData}
           setStatus={setStatus}
+          setSelectedImage={setSelectedImage}
         />
       </Layout>
-      <Layout.Sider width={300}>Sider 2</Layout.Sider>
+      <Layout.Sider width={300}>
+        {selectedImage && <img src={`file:/${selectedImage}`} />}
+      </Layout.Sider>
     </Layout>
   );
 }

@@ -1,18 +1,27 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
-import {Button, Layout, List, Tooltip, Upload} from "antd";
+import React, {
+  Dispatch,
+  SetStateAction,
+  MouseEvent,
+  useEffect,
+  useRef,
+} from "react";
+import { Button, Layout, List, Tooltip, Upload } from "antd";
 import { RcFile } from "antd/es/upload";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined, CloseOutlined } from "@ant-design/icons";
+import settings from "../../settings";
 
 interface ImageListProps {
   setListData: Dispatch<SetStateAction<string[]>>;
   listData: string[];
   setStatus: Dispatch<SetStateAction<string>>;
+  setSelectedImage: Dispatch<SetStateAction<string>>;
 }
 
 export default function ImageList({
   setListData,
   listData,
   setStatus,
+  setSelectedImage,
 }: ImageListProps) {
   const addCount = useRef<number>(0);
   const addCountAdded = useRef<number>(0);
@@ -56,6 +65,19 @@ export default function ImageList({
     return false;
   };
 
+  const onSelect = (event: MouseEvent) => {
+    const element = event.target as HTMLTextAreaElement;
+
+    if (!element.classList.contains("active-list-item")) {
+      const elems = document.querySelector(".active-list-item");
+      if (elems !== null) {
+        elems.classList.remove("active-list-item");
+      }
+      element.classList.add("active-list-item");
+      setSelectedImage(element.firstChild.textContent);
+    }
+  };
+
   return (
     <>
       <Layout.Header className="header">
@@ -64,31 +86,31 @@ export default function ImageList({
           multiple={true}
           showUploadList={false}
         >
-
-          <Tooltip placement="right" title="select image files from your hard drive">
-            <Button
-              className="upload-button"
-              size="small"
-              type="primary"
-              icon={<PlusOutlined />}
-            >
-              Add Files
-            </Button>
-          </Tooltip>
+          <Button
+            className="upload-button"
+            size="small"
+            type="primary"
+            icon={<PlusOutlined />}
+          >
+            Add Files
+          </Button>
         </Upload>
         or drag and drop in area below
-        <Tooltip placement="left" title="clear list">
+        {listData.length && (
           <Button
-              className="delete-button"
-              size="small"
-              type="primary"
-              danger
-              onClick={() => {
-                setListData([])
-              }}
-              icon={<DeleteOutlined />}
-          />
-        </Tooltip>
+            className="delete-button"
+            size="small"
+            type="primary"
+            danger
+            onClick={() => {
+              setListData([]);
+              setStatus(`cleared list`);
+            }}
+            icon={<CloseOutlined />}
+          >
+            clear list
+          </Button>
+        )}
       </Layout.Header>
 
       <Layout.Content className="list-container">
@@ -102,23 +124,28 @@ export default function ImageList({
           <List
             size="small"
             className="list"
-            header={<div>FILES</div>}
+            header={<div>{listData.length} FILES</div>}
             bordered
             dataSource={listData}
-            renderItem={(item) => (
+            renderItem={(item, index) => (
               <List.Item
                 className="list-item"
-                onMouseDown={(event) => {
-                  const element = event.target as HTMLTextAreaElement;
-
-                  if (!element.classList.contains("active-list-item")) {
-                    const elems = document.querySelector(".active-list-item");
-                    if (elems !== null) {
-                      elems.classList.remove("active-list-item");
-                    }
-                    element.classList.add("active-list-item");
-                  }
-                }}
+                actions={[
+                  <Button
+                    key={`delete-${index}`}
+                    size="small"
+                    type="primary"
+                    danger
+                    icon={<CloseOutlined />}
+                    onClick={() => {
+                      setListData((prevState) => {
+                        return prevState.filter((e) => e !== item);
+                      });
+                      setStatus(`removed from list: ${item}`);
+                    }}
+                  />,
+                ]}
+                onMouseDown={onSelect}
               >
                 {item}
               </List.Item>

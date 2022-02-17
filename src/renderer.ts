@@ -26,8 +26,14 @@
  * ```
  */
 
-
-console.log('👋 This message is being logged by "renderer.js", included via webpack22');
+declare global {
+  interface Window {
+    api: any;
+  }
+}
+console.log(
+  '👋 This message is being logged by "renderer.js", included via webpack22'
+);
 
 // Add this to the end of the existing file
-import './ui';
+import "./ui";

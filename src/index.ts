@@ -1,6 +1,8 @@
-import { app, BrowserWindow, nativeTheme, ipcMain } from "electron";
+import { app, BrowserWindow, nativeTheme, ipcMain, protocol } from "electron";
+import path from "path";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -10,16 +12,18 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = (): void => {
-  nativeTheme.themeSource = "dark";
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 900,
     webPreferences: {
       webgl: true,
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
 
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).then(() => {
+    console.log(`URL ${MAIN_WINDOW_WEBPACK_ENTRY} loaded`);
+  });
 
   ipcMain.handle("dark-mode:toggle", () => {
     if (nativeTheme.shouldUseDarkColors) {

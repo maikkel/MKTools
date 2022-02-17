@@ -22,6 +22,19 @@ body {
   }
 }
 
+
+.ant-list-empty-text {
+  display: none;
+}
+
+.ant-upload.ant-upload-drag {
+  border: none;
+}
+.ant-upload.ant-upload-drag-hover {
+  box-shadow: inset 0 0 30px 0 black;
+  background: $empty-background-highlight;
+}
+
 @import "src/ui/MkTools";
 @import "src/ui/layout/Header";
 @import "src/ui/layout/Footer";
