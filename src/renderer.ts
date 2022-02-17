@@ -28,7 +28,9 @@
 
 declare global {
   interface Window {
-    api: any;
+    api: {
+      test: () => string;
+    };
   }
 }
 console.log(

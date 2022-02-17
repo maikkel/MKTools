@@ -7,4 +7,5 @@ import MkTools from "./MkTools";
 function render() {
   ReactDOM.render(<MkTools />, document.getElementById("app"));
 }
+console.log(window.api.test());
 render();
