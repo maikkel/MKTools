@@ -11,6 +11,14 @@
       margin-top: 10px;
     }
   }
+
+  #image-info {
+
+    img {
+      max-width: 100%;
+    }
+  }
+
   .list-container {
     background: $empty-background;
     overflow: auto;

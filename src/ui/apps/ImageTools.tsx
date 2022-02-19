@@ -21,8 +21,10 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
           setSelectedImage={setSelectedImage}
         />
       </Layout>
-      <Layout.Sider width={300}>
-        {selectedImage && <img src={`file:/${selectedImage}`} />}
+      <Layout.Sider id="image-info" width={300}>
+        {selectedImage && (
+          <img alt="preview" src={`data:image/jpg;base64,${selectedImage}`} />
+        )}
       </Layout.Sider>
     </Layout>
   );

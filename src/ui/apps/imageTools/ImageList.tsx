@@ -1,14 +1,7 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  MouseEvent,
-  useEffect,
-  useRef,
-} from "react";
-import { Button, Layout, List, Tooltip, Upload } from "antd";
+import React, { Dispatch, MouseEvent, SetStateAction, useRef } from "react";
+import { Button, Layout, List, Upload } from "antd";
 import { RcFile } from "antd/es/upload";
-import { PlusOutlined, DeleteOutlined, CloseOutlined } from "@ant-design/icons";
-import settings from "../../settings";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
 interface ImageListProps {
   setListData: Dispatch<SetStateAction<string[]>>;
@@ -74,7 +67,15 @@ export default function ImageList({
         elems.classList.remove("active-list-item");
       }
       element.classList.add("active-list-item");
-      setSelectedImage(element.firstChild.textContent);
+      const path = element.firstChild.textContent;
+
+      window.api
+        .invoke("imageTools:getPreview", path)
+        .then((imageDataBase64) => {
+          setSelectedImage(imageDataBase64.imgString);
+          console.log("metadata");
+          console.log(imageDataBase64.metaData);
+        });
     }
   };
 

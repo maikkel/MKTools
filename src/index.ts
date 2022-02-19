@@ -1,5 +1,5 @@
-import { app, BrowserWindow, nativeTheme, ipcMain, protocol } from "electron";
-import path from "path";
+import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
+import imageToolsController from "./controllers/imageToolsController";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -53,3 +53,5 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+imageToolsController();
