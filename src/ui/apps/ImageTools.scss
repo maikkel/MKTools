@@ -1,69 +1,101 @@
 
 #image-tools {
-  .header {
-    padding: 0 10px;
-    background: #111111;
-    .upload-button {
-      margin-right: 10px;
-    }
-    .delete-button {
-      float: right;
-      margin-top: 10px;
-    }
+
+  #image-form {
+    padding: 10px;
   }
-
   #image-info {
-
+    overflow: auto;
     img {
       max-width: 100%;
+      background: $empty-background-light;
     }
-  }
-
-  .list-container {
-    background: $empty-background;
-    overflow: auto;
-    .dragger {
-      cursor: default;
-      .ant-upload {
-        padding: 0;
-        .ant-upload-drag-container {
-          display: block;
-          vertical-align: top;
-        }
-      }
-    }
-
-    .list {
-      border: none;
-      .ant-list-header{
-        width: 100%;
-        background: $header-gradient;
-        border: 1px solid black;
-        position: sticky;
-        padding: 0 10px;
-        height: 24px;
-        line-height: 20px;
-        text-align: left;
-        font-weight: bold;
-      }
-      .list-item {
-        user-select: none;
-        background: #111111;
-        border: none;
-        cursor: pointer;
-        padding: 4px 10px;
-        .ant-list-item-action{
-          li {
-            padding-right: 0;
+    .image-preview-table {
+      font-size: 11px;
+      margin-bottom: 10px;
+      width: 100%;
+      tr {
+        td {
+          &:nth-child(1) {
+            width: 35%;
+            padding-left: 10px;
           }
         }
-        &:nth-child(even) {
-          background: #161616;
+      }
+      .title {
+        background: $header-gradient;
+        border-bottom: 1px solid black;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  #image-list {
+    border: 3px solid black;
+    border-top: none;
+    border-bottom: none;
+    .header {
+      padding: 0 10px;
+      background: #111111;
+      .upload-button {
+        margin-right: 10px;
+      }
+      .delete-button {
+        float: right;
+        margin-top: 10px;
+      }
+    }
+
+    .list-container {
+      background: $empty-background;
+      overflow: auto;
+      .dragger {
+        cursor: default;
+        .ant-upload {
+          padding: 0;
+          .ant-upload-drag-container {
+            display: block;
+            vertical-align: top;
+          }
         }
-        &.active-list-item {
-          background: $primary-color;
+      }
+
+      .list {
+        border: none;
+        .ant-list-header{
+          width: 100%;
+          background: $header-gradient;
+          border: 1px solid black;
+          border-right: none;
+          border-left: none;
+          position: sticky;
+          padding: 0 10px;
+          height: 24px;
+          line-height: 20px;
+          text-align: left;
+          font-weight: bold;
+        }
+        .list-item {
+          user-select: none;
+          background: #111111;
+          border: none;
+          cursor: pointer;
+          padding: 4px 10px;
+          .ant-list-item-action{
+            li {
+              padding-right: 0;
+            }
+          }
+          &:nth-child(even) {
+            background: #161616;
+          }
+          &.active-list-item {
+            background: $primary-color;
+          }
         }
       }
     }
   }
+
 }

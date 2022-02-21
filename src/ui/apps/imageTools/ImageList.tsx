@@ -7,14 +7,16 @@ interface ImageListProps {
   setListData: Dispatch<SetStateAction<string[]>>;
   listData: string[];
   setStatus: Dispatch<SetStateAction<string>>;
-  setSelectedImage: Dispatch<SetStateAction<string>>;
+  setSelectedPath: Dispatch<SetStateAction<string>>;
+  loadPreview: (path?: string) => void;
 }
 
 export default function ImageList({
   setListData,
   listData,
   setStatus,
-  setSelectedImage,
+  setSelectedPath,
+  loadPreview,
 }: ImageListProps) {
   const addCount = useRef<number>(0);
   const addCountAdded = useRef<number>(0);
@@ -68,15 +70,16 @@ export default function ImageList({
       }
       element.classList.add("active-list-item");
       const path = element.firstChild.textContent;
+      setSelectedPath(path);
 
-      window.api
-        .invoke("imageTools:getPreview", path)
-        .then((imageDataBase64) => {
-          setSelectedImage(imageDataBase64.imgString);
-          console.log("metadata");
-          console.log(imageDataBase64.metaData);
-        });
+      loadPreview(path);
     }
+  };
+
+  const onClear = () => {
+    setListData([]);
+    loadPreview();
+    setStatus(`cleared list`);
   };
 
   return (
@@ -103,10 +106,7 @@ export default function ImageList({
             size="small"
             type="primary"
             danger
-            onClick={() => {
-              setListData([]);
-              setStatus(`cleared list`);
-            }}
+            onClick={onClear}
             icon={<CloseOutlined />}
           >
             clear list
@@ -142,6 +142,7 @@ export default function ImageList({
                       setListData((prevState) => {
                         return prevState.filter((e) => e !== item);
                       });
+                      loadPreview();
                       setStatus(`removed from list: ${item}`);
                     }}
                   />,
