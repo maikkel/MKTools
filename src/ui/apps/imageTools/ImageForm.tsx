@@ -1,5 +1,14 @@
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+} from "antd";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import ColorPicker from "../../utils/ColorPicker";
 
 interface ImageFormProps {
   formFields: Record<string, any>;
@@ -32,25 +41,28 @@ export default function ImageForm({
       {compLoaded && (
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          labelCol={{ span: 9 }}
+          wrapperCol={{ span: 15 }}
           initialValues={formFields}
           onValuesChange={onChange}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item name="resize" valuePropName="checked">
-            <Checkbox>Resize</Checkbox>
+          <Form.Item
+            name="square"
+            valuePropName="checked"
+            className="main-item"
+          >
+            <Checkbox>Make Square</Checkbox>
           </Form.Item>
-          <Form.Item label="Fit type" name="fit" hidden={!formFields.resize}>
-            <Select>
-              <Select.Option value="cover">Cover</Select.Option>
-              <Select.Option value="contain">Contain</Select.Option>
-              <Select.Option value="fill">Fill</Select.Option>
-              <Select.Option value="inside">Inside</Select.Option>
-              <Select.Option value="outside">Outside</Select.Option>
-            </Select>
+
+          <Form.Item
+            name="resize"
+            valuePropName="checked"
+            className="main-item"
+          >
+            <Checkbox>Resize</Checkbox>
           </Form.Item>
 
           <Form.Item
@@ -59,7 +71,7 @@ export default function ImageForm({
             className="double-input"
           >
             <Form.Item name="width">
-              <Input />
+              <InputNumber max="16000" />
             </Form.Item>
             <div className="spacer">x</div>
             <Form.Item name="height">
@@ -68,25 +80,29 @@ export default function ImageForm({
           </Form.Item>
 
           <Form.Item
-            label="Password"
-            name="password"
-            hidden={!formFields?.resize}
+            label="Fit type"
+            name="resizeFit"
+            hidden={!formFields.resize}
           >
-            <Input.Password />
+            <Select>
+              <Select.Option value="cover">Cover</Select.Option>
+              <Select.Option value="contain">Contain</Select.Option>
+              <Select.Option value="fill">Fill</Select.Option>
+            </Select>
           </Form.Item>
 
           <Form.Item
-            name="remember"
-            valuePropName="checked"
-            hidden={!formFields?.resize}
-            wrapperCol={{ offset: 8, span: 16 }}
+            label="Background"
+            name="resizeBackground"
+            hidden={!formFields?.resize || formFields.resizeFit !== "contain"}
           >
-            <Checkbox>Remember me</Checkbox>
+            <ColorPicker />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+          <Divider />
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Button type="primary" htmlType="submit" block>
+              Apply to all images
             </Button>
           </Form.Item>
         </Form>

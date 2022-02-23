@@ -8,7 +8,6 @@ interface ImageListProps {
   listData: string[];
   setStatus: Dispatch<SetStateAction<string>>;
   setSelectedPath: Dispatch<SetStateAction<string>>;
-  loadPreview: (path?: string) => void;
 }
 
 export default function ImageList({
@@ -16,7 +15,6 @@ export default function ImageList({
   listData,
   setStatus,
   setSelectedPath,
-  loadPreview,
 }: ImageListProps) {
   const addCount = useRef<number>(0);
   const addCountAdded = useRef<number>(0);
@@ -69,16 +67,14 @@ export default function ImageList({
         elems.classList.remove("active-list-item");
       }
       element.classList.add("active-list-item");
-      const path = element.firstChild.textContent;
+      const path = element.firstChild?.textContent;
       setSelectedPath(path);
-
-      loadPreview(path);
     }
   };
 
   const onClear = () => {
     setListData([]);
-    loadPreview();
+    setSelectedPath("");
     setStatus(`cleared list`);
   };
 
@@ -109,7 +105,7 @@ export default function ImageList({
             onClick={onClear}
             icon={<CloseOutlined />}
           >
-            clear list
+            Clear List
           </Button>
         )}
       </Layout.Header>
@@ -125,7 +121,7 @@ export default function ImageList({
           <List
             size="small"
             className="list"
-            header={<div>{listData.length} FILES</div>}
+            header={<div>{listData.length} FILES (Click for preview)</div>}
             bordered
             dataSource={listData}
             renderItem={(item, index) => (
@@ -142,7 +138,6 @@ export default function ImageList({
                       setListData((prevState) => {
                         return prevState.filter((e) => e !== item);
                       });
-                      loadPreview();
                       setStatus(`removed from list: ${item}`);
                     }}
                   />,

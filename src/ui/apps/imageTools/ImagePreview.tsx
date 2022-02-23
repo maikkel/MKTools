@@ -1,18 +1,35 @@
 import React from "react";
 
 interface ImagePreviewProps {
-  selectedImage: string;
+  selectedImageOrig: string;
+  selectedImagePreview: string;
   metadata: Record<string, any>;
 }
 
 export default function ImagePreview({
-  selectedImage,
+  selectedImageOrig,
+  selectedImagePreview,
   metadata,
 }: ImagePreviewProps) {
   return (
     <>
-      {selectedImage && (
-        <img alt="preview" src={`data:image/jpg;base64,${selectedImage}`} />
+      {selectedImageOrig && (
+        <div className="image-orig">
+          <div className="title">ORIGINAL</div>
+          <img
+            alt="preview"
+            src={`data:image/png;base64,${selectedImageOrig}`}
+          />
+        </div>
+      )}
+      {selectedImagePreview && (
+        <div className="image-preview">
+          <div className="title">PREVIEW</div>
+          <img
+            alt="preview"
+            src={`data:image/png;base64,${selectedImagePreview}`}
+          />
+        </div>
       )}
       {metadata && (
         <>

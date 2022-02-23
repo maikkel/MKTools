@@ -8,6 +8,9 @@
       display: flex;
       .ant-form-item {
         margin-bottom: 0;
+        .ant-input-number {
+          width: auto;
+        }
       }
       .spacer {
         line-height: 28px;
