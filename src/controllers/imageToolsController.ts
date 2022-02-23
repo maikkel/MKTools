@@ -1,41 +1,14 @@
 import { ipcMain } from "electron";
-import sharp, { FitEnum, Metadata, Sharp } from "sharp";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import exif from "exif-reader";
+import sharp from "sharp";
+import {
+  getMetadata,
+  makeBase64String,
+  makePreview,
+  resize,
+  square,
+} from "../utils/imageUtils";
 
-const makeBase64String = async (image: Sharp): Promise<string> => {
-  return await image.toBuffer().then((buffer: Buffer) => {
-    return buffer.toString("base64");
-  });
-};
-
-const getMetadata = async (image: Sharp): Promise<Metadata> => {
-  return await image.metadata().then((md) => {
-    md.exif = md.exif ? exif(md.exif) : undefined;
-    return md;
-  });
-};
-
-const makePreview = (image: Sharp): Sharp => {
-  return image.toFormat("png").resize(600, 600, {
-    fit: "contain",
-    background: { r: 0, g: 255, b: 0, alpha: 0 },
-  });
-};
-
-const resize = (
-  image: Sharp,
-  width = 600,
-  height = 600,
-  fit: keyof FitEnum = "contain",
-  background = "#000000"
-): Sharp => {
-  return image.resize(width, height, {
-    fit: fit,
-    background: background,
-  });
-};
+const previewSize = 300;
 
 const imageToolsController = () => {
   ipcMain.handle("imageTools:getMetadata", async (_event, path: string) => {
@@ -49,37 +22,100 @@ const imageToolsController = () => {
   ipcMain.handle(
     "imageTools:getPreview",
     async (_event, path: string, formFields: Record<string, any>) => {
-      const width = parseInt(formFields.width) || 600;
-      const height = parseInt(formFields.height) || 600;
+      let image = sharp(path);
 
-      let ratio;
-      let newWidth = width;
-      let newHeight = height;
-      if (width > 600 || height > 600) {
-        if (width > height) {
-          ratio = width / height;
-          newWidth = 600;
-          newHeight = 600 / ratio;
-        } else {
-          ratio = height / width;
-          newHeight = 600;
-          newWidth = 600 / ratio;
-        }
+      const origSize = await image.metadata().then((md) => {
+        return {
+          w: md.width,
+          h: md.height,
+        };
+      });
+
+      let fullSize = {
+        w: origSize.w,
+        h: origSize.h,
+      };
+
+      if (formFields.square) {
+        const maxSize = Math.max(fullSize.w, fullSize.h);
+
+        fullSize = {
+          w: maxSize,
+          h: maxSize,
+        };
+
+        image = await square(
+          image,
+          previewSize,
+          formFields.squareFit,
+          formFields.squareBackground
+        )
+          .toBuffer()
+          .then((data) => {
+            return sharp(data);
+          });
       }
 
-      const imageBuffer = await resize(
-        sharp(path),
-        newWidth,
-        newHeight,
-        formFields.resizeFit,
-        formFields.resizeBackground
-      )
-        .toBuffer()
-        .then((data) => {
-          return data;
-        });
+      if (formFields.resize) {
+        const width = parseInt(formFields.width) || previewSize;
+        const height = parseInt(formFields.height) || previewSize;
 
-      return await makeBase64String(makePreview(sharp(imageBuffer)));
+        fullSize = {
+          w: width,
+          h: height,
+        };
+
+        let ratio;
+        let newWidth = width;
+        let newHeight = height;
+        if (width > previewSize || height > previewSize) {
+          if (width > height) {
+            ratio = width / height;
+            newWidth = previewSize;
+            newHeight = previewSize / ratio;
+          } else {
+            ratio = height / width;
+            newHeight = previewSize;
+            newWidth = previewSize / ratio;
+          }
+        }
+
+        if (formFields.resizeFit === "inside") {
+          const boxRatio = width / height;
+          const imgRatio = origSize.w / origSize.h;
+
+          if (imgRatio > boxRatio) {
+            // wider
+            fullSize = {
+              w: width,
+              h: Math.round(width / imgRatio),
+            };
+          } else {
+            // narrower
+            fullSize = {
+              w: Math.round(height * imgRatio),
+              h: height,
+            };
+          }
+        }
+
+        image = await resize(
+          image,
+          newWidth,
+          newHeight,
+          formFields.resizeFit,
+          formFields.resizeBackground
+        )
+          .toBuffer()
+          .then((data) => {
+            return sharp(data);
+          });
+      }
+
+      return {
+        image: await makeBase64String(makePreview(image)),
+        size: fullSize,
+      };
     }
   );
 };

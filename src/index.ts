@@ -39,6 +39,9 @@ const createWindow = (): void => {
   });
 
   mainWindow.webContents.openDevTools({ mode: "bottom" });
+
+  console.log("");
+  console.log("userData", app.getPath("userData"));
 };
 app.on("ready", createWindow);
 

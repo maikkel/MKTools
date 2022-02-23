@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-} from "antd";
+import { Button, Checkbox, Divider, Form, InputNumber, Select } from "antd";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ColorPicker from "../../utils/ColorPicker";
 
@@ -58,6 +50,26 @@ export default function ImageForm({
           </Form.Item>
 
           <Form.Item
+            label="Fit type"
+            name="squareFit"
+            hidden={!formFields?.square}
+          >
+            <Select>
+              <Select.Option value="cover">Cover</Select.Option>
+              <Select.Option value="contain">Contain</Select.Option>
+              <Select.Option value="fill">Fill</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Background"
+            name="squareBackground"
+            hidden={!formFields?.square || formFields?.squareFit !== "contain"}
+          >
+            <ColorPicker />
+          </Form.Item>
+
+          <Form.Item
             name="resize"
             valuePropName="checked"
             className="main-item"
@@ -75,26 +87,27 @@ export default function ImageForm({
             </Form.Item>
             <div className="spacer">x</div>
             <Form.Item name="height">
-              <Input />
+              <InputNumber max="16000" />
             </Form.Item>
           </Form.Item>
 
           <Form.Item
             label="Fit type"
             name="resizeFit"
-            hidden={!formFields.resize}
+            hidden={!formFields?.resize}
           >
             <Select>
               <Select.Option value="cover">Cover</Select.Option>
               <Select.Option value="contain">Contain</Select.Option>
               <Select.Option value="fill">Fill</Select.Option>
+              <Select.Option value="inside">Inside</Select.Option>
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Background"
             name="resizeBackground"
-            hidden={!formFields?.resize || formFields.resizeFit !== "contain"}
+            hidden={!formFields?.resize || formFields?.resizeFit !== "contain"}
           >
             <ColorPicker />
           </Form.Item>

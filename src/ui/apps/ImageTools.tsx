@@ -19,6 +19,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
   const [selectedPath, setSelectedPath] = useState<string>("");
   const [selectedImageOrig, setSelectedImageOrig] = useState<string>("");
   const [selectedImagePreview, setSelectedImagePreview] = useState<string>("");
+  const [previewSize, setPreviewSize] = useState<string>("");
   const [metadata, setMetadata] = useState<Record<string, any>>(undefined);
   const [formFields, setFormFields] = useState<Record<string, any>>({});
 
@@ -30,7 +31,8 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
         window.api
           .invoke("imageTools:getPreview", path, formFields)
           .then((data) => {
-            setSelectedImagePreview(data);
+            setSelectedImagePreview(data.image);
+            setPreviewSize(`${data.size.w} x ${data.size.h} px`);
           });
       }
     },
@@ -96,6 +98,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
         <ImagePreview
           selectedImageOrig={selectedImageOrig}
           selectedImagePreview={selectedImagePreview}
+          previewSize={previewSize}
           metadata={metadata}
         />
       </Layout.Sider>

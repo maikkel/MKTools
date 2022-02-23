@@ -3,12 +3,14 @@ import React from "react";
 interface ImagePreviewProps {
   selectedImageOrig: string;
   selectedImagePreview: string;
+  previewSize: string;
   metadata: Record<string, any>;
 }
 
 export default function ImagePreview({
   selectedImageOrig,
   selectedImagePreview,
+  previewSize,
   metadata,
 }: ImagePreviewProps) {
   return (
@@ -24,7 +26,7 @@ export default function ImagePreview({
       )}
       {selectedImagePreview && (
         <div className="image-preview">
-          <div className="title">PREVIEW</div>
+          <div className="title">PREVIEW - {previewSize}</div>
           <img
             alt="preview"
             src={`data:image/png;base64,${selectedImagePreview}`}
