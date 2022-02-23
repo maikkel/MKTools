@@ -31,6 +31,7 @@ export default function ColorPicker({ value, onChange }: ColorPickerProps) {
 
   useEffect(() => {
     applyColor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [color]);
 
   const styles = reactCSS({
