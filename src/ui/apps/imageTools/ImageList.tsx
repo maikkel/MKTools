@@ -1,11 +1,12 @@
-import React, { Dispatch, MouseEvent, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { Button, Layout, List, Upload } from "antd";
 import { RcFile } from "antd/es/upload";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { listDataItem } from "../ImageTools";
 
 interface ImageListProps {
-  setListData: Dispatch<SetStateAction<string[]>>;
-  listData: string[];
+  setListData: Dispatch<SetStateAction<listDataItem[]>>;
+  listData: listDataItem[];
   setStatus: Dispatch<SetStateAction<string>>;
   setSelectedPath: Dispatch<SetStateAction<string>>;
 }
@@ -23,10 +24,12 @@ export default function ImageList({
 
   const handleUpload = (file: RcFile, fileList: RcFile[]) => {
     addCount.current++;
-    if (!listData.includes(file.path)) {
+    if (listData.filter((item) => item.path === file.path).length === 0) {
       if (file.type.startsWith("image")) {
         setListData((prevState) => {
-          return [...prevState, file.path].sort();
+          return [...prevState, { path: file.path }].sort((a, b) =>
+            a.path > b.path ? 1 : -1
+          );
         });
         addCountAdded.current++;
       } else {
@@ -56,20 +59,6 @@ export default function ImageList({
     }
 
     return false;
-  };
-
-  const onSelect = (event: MouseEvent) => {
-    const element = event.target as HTMLTextAreaElement;
-
-    if (!element.classList.contains("active-list-item")) {
-      const elems = document.querySelector(".active-list-item");
-      if (elems !== null) {
-        elems.classList.remove("active-list-item");
-      }
-      element.classList.add("active-list-item");
-      const path = element.firstChild?.textContent;
-      setSelectedPath(path);
-    }
   };
 
   const onClear = () => {
@@ -126,7 +115,9 @@ export default function ImageList({
             dataSource={listData}
             renderItem={(item, index) => (
               <List.Item
-                className="list-item"
+                className={
+                  "list-item " + (item.selected ? "active-list-item" : "")
+                }
                 actions={[
                   <Button
                     key={`delete-${index}`}
@@ -134,17 +125,30 @@ export default function ImageList({
                     type="primary"
                     danger
                     icon={<CloseOutlined />}
-                    onClick={() => {
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (item.selected) {
+                        setSelectedPath("");
+                      }
                       setListData((prevState) => {
                         return prevState.filter((e) => e !== item);
                       });
-                      setStatus(`removed from list: ${item}`);
+                      setStatus(`removed from list: ${item.path}`);
                     }}
                   />,
                 ]}
-                onMouseDown={onSelect}
+                onMouseDown={() => {
+                  for (const i of listData) {
+                    i.selected = false;
+                  }
+                  item.selected = true;
+                  setSelectedPath(item.path);
+                }}
               >
-                {item}
+                {item.path}
               </List.Item>
             )}
           />
