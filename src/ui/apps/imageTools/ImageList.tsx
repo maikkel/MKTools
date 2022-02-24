@@ -130,6 +130,7 @@ export default function ImageList({
                     setLayout(event.target.value);
                   }}
                   defaultValue="list"
+                  buttonStyle="solid"
                 >
                   <Radio.Button value="list">
                     <UnorderedListOutlined />
@@ -179,6 +180,7 @@ export default function ImageList({
               >
                 <img
                   alt="preview"
+                  draggable="false"
                   src={
                     item.thumbnail && `data:image/png;base64,${item.thumbnail}`
                   }
