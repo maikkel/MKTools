@@ -16,7 +16,11 @@ const imageToolsController = () => {
   });
 
   ipcMain.handle("imageTools:getPreviewOrig", async (_event, path: string) => {
-    return await makeBase64String(makePreview(sharp(path)));
+    return await makeBase64String(makePreview(sharp(path), previewSize));
+  });
+
+  ipcMain.handle("imageTools:getThumbnail", async (_event, path: string) => {
+    return await makeBase64String(makePreview(sharp(path), 60));
   });
 
   ipcMain.handle(
@@ -113,7 +117,7 @@ const imageToolsController = () => {
       }
 
       return {
-        image: await makeBase64String(makePreview(image)),
+        image: await makeBase64String(makePreview(image, previewSize)),
         size: fullSize,
       };
     }

@@ -16,10 +16,10 @@ const getMetadata = async (image: Sharp): Promise<Metadata> => {
   });
 };
 
-const makePreview = (image: Sharp): Sharp => {
-  return image.toFormat("png").resize(600, 600, {
+const makePreview = (image: Sharp, size: number): Sharp => {
+  return image.toFormat("png").resize(size, size, {
     fit: "contain",
-    background: { r: 0, g: 255, b: 0, alpha: 0 },
+    background: { r: 0, g: 0, b: 0, alpha: 0 },
   });
 };
 

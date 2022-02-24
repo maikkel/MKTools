@@ -106,13 +106,35 @@
           line-height: 20px;
           text-align: left;
           font-weight: bold;
+          .layout-switch {
+            position: absolute;
+            top: 0;
+            right: 0;
+            .ant-radio-button-wrapper {
+              height: 22px;
+              line-height: 22px;
+              font-size: 16px;
+            }
+          }
         }
         .list-item {
           user-select: none;
           background: #111111;
           border: none;
           cursor: pointer;
-          padding: 4px 10px;
+          padding: 4px 10px 4px 50px;
+          text-align: left;
+          position: relative;
+          line-height: 23px;
+
+          img {
+            width: 31px;
+            height: 31px;
+            background: black;
+            position: absolute;
+            top: 0;
+            left: 10px;
+          }
           .ant-list-item-action{
             li {
               padding-right: 0;
@@ -125,7 +147,30 @@
             background: $primary-color;
           }
         }
+        &.layout-icons {
+           .list-item {
+             height: 80px;
+             width: 80px;
+             .path {
+               display: none;
+             }
+             img {
+               top: 10px; left: 10px;
+               width: 60px;
+               height: 60px;
+             }
+           }
+           .ant-list-item-action{
+             li {
+               position: absolute;
+               top: 0;
+               right: 0;
+             }
+           }
+         }
       }
+
+
     }
   }
 

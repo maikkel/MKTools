@@ -10,11 +10,12 @@ import ImageList from "./imageTools/ImageList";
 import ImagePreview from "./imageTools/ImagePreview";
 import ImageForm from "./imageTools/ImageForm";
 
-export interface listDataItem {
+export interface ListDataItem {
   path: string;
   working?: boolean;
   done?: boolean;
   selected?: boolean;
+  thumbnail?: string;
 }
 
 interface ImageToolsProps {
@@ -22,7 +23,7 @@ interface ImageToolsProps {
 }
 
 export default function ImageTools({ setStatus }: ImageToolsProps) {
-  const [listData, setListData] = useState<listDataItem[]>([]);
+  const [listData, setListData] = useState<ListDataItem[]>([]);
   const [selectedPath, setSelectedPath] = useState<string>("");
   const [selectedImageOrig, setSelectedImageOrig] = useState<string>("");
   const [selectedImagePreview, setSelectedImagePreview] = useState<string>("");

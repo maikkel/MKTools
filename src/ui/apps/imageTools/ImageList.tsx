@@ -1,12 +1,17 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
-import { Button, Layout, List, Upload } from "antd";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Button, Layout, List, Radio, Upload } from "antd";
 import { RcFile } from "antd/es/upload";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { listDataItem } from "../ImageTools";
+import {
+  CloseOutlined,
+  PlusOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
+import { ListDataItem } from "../ImageTools";
 
 interface ImageListProps {
-  setListData: Dispatch<SetStateAction<listDataItem[]>>;
-  listData: listDataItem[];
+  setListData: Dispatch<SetStateAction<ListDataItem[]>>;
+  listData: ListDataItem[];
   setStatus: Dispatch<SetStateAction<string>>;
   setSelectedPath: Dispatch<SetStateAction<string>>;
 }
@@ -17,6 +22,7 @@ export default function ImageList({
   setStatus,
   setSelectedPath,
 }: ImageListProps) {
+  const [layout, setLayout] = useState<string>("list");
   const addCount = useRef<number>(0);
   const addCountAdded = useRef<number>(0);
   const addCountDuplicate = useRef<number>(0);
@@ -26,10 +32,14 @@ export default function ImageList({
     addCount.current++;
     if (listData.filter((item) => item.path === file.path).length === 0) {
       if (file.type.startsWith("image")) {
-        setListData((prevState) => {
-          return [...prevState, { path: file.path }].sort((a, b) =>
-            a.path > b.path ? 1 : -1
-          );
+        const newItem: ListDataItem = { path: file.path };
+        window.api.invoke("imageTools:getThumbnail", file.path).then((data) => {
+          newItem.thumbnail = data;
+          setListData((prevState) => {
+            return [...prevState, newItem].sort((a, b) =>
+              a.path > b.path ? 1 : -1
+            );
+          });
         });
         addCountAdded.current++;
       } else {
@@ -108,9 +118,28 @@ export default function ImageList({
           showUploadList={false}
         >
           <List
+            grid={layout !== "list" && { gutter: 0 }}
             size="small"
-            className="list"
-            header={<div>{listData.length} FILES (Click for preview)</div>}
+            className={"list " + `layout-${layout}`}
+            header={
+              <div>
+                {listData.length} FILES (Click for preview)
+                <Radio.Group
+                  className="layout-switch"
+                  onChange={(event) => {
+                    setLayout(event.target.value);
+                  }}
+                  defaultValue="list"
+                >
+                  <Radio.Button value="list">
+                    <UnorderedListOutlined />
+                  </Radio.Button>
+                  <Radio.Button value="icons">
+                    <AppstoreOutlined />
+                  </Radio.Button>
+                </Radio.Group>
+              </div>
+            }
             bordered
             dataSource={listData}
             renderItem={(item, index) => (
@@ -148,7 +177,13 @@ export default function ImageList({
                   setSelectedPath(item.path);
                 }}
               >
-                {item.path}
+                <img
+                  alt="preview"
+                  src={
+                    item.thumbnail && `data:image/png;base64,${item.thumbnail}`
+                  }
+                />
+                <span className="path">{item.path}</span>
               </List.Item>
             )}
           />
