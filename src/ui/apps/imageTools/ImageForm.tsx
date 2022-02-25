@@ -5,11 +5,13 @@ import ColorPicker from "../../utils/ColorPicker";
 interface ImageFormProps {
   formFields: Record<string, any>;
   setFormFields: Dispatch<SetStateAction<Record<string, any>>>;
+  applyTools: (values: Record<string, any>) => void;
 }
 
 export default function ImageForm({
   formFields,
   setFormFields,
+  applyTools,
 }: ImageFormProps) {
   const [compLoaded, setCompLoaded] = useState<boolean>(false);
   const onChange = (changedValues: any, values: any) => {
@@ -17,7 +19,7 @@ export default function ImageForm({
   };
 
   const onFinish = (values: any) => {
-    console.log("Success:", values);
+    applyTools(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {

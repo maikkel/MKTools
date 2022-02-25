@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button, Layout, List, Radio, Upload } from "antd";
 import { RcFile } from "antd/es/upload";
 import {
@@ -6,6 +12,8 @@ import {
   PlusOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
+  LoadingOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import { ListDataItem } from "../ImageTools";
 
@@ -77,6 +85,20 @@ export default function ImageList({
     setStatus(`cleared list`);
   };
 
+  useEffect(() => {
+    setLayout(
+      JSON.parse(window.localStorage.getItem("imageTools_settings_layout")) ||
+        "list"
+    );
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "imageTools_settings_layout",
+      JSON.stringify(layout)
+    );
+  }, [layout]);
+
   return (
     <>
       <Layout.Header className="header">
@@ -129,7 +151,7 @@ export default function ImageList({
                   onChange={(event) => {
                     setLayout(event.target.value);
                   }}
-                  defaultValue="list"
+                  value={layout}
                   buttonStyle="solid"
                 >
                   <Radio.Button value="list">
@@ -149,6 +171,16 @@ export default function ImageList({
                   "list-item " + (item.selected ? "active-list-item" : "")
                 }
                 actions={[
+                  <LoadingOutlined
+                    className={
+                      "icon icon-loading " + (item.loading ? "" : "hidden")
+                    }
+                    key={`loading-${index}`}
+                  />,
+                  <CheckCircleOutlined
+                    className={"icon icon-done " + (item.done ? "" : "hidden")}
+                    key={`loading-${index}`}
+                  />,
                   <Button
                     key={`delete-${index}`}
                     size="small"

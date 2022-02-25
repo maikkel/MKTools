@@ -3,6 +3,7 @@ import React, {
   SetStateAction,
   useCallback,
   useEffect,
+  useReducer,
   useState,
 } from "react";
 import { Layout } from "antd";
@@ -12,7 +13,7 @@ import ImageForm from "./imageTools/ImageForm";
 
 export interface ListDataItem {
   path: string;
-  working?: boolean;
+  loading?: boolean;
   done?: boolean;
   selected?: boolean;
   thumbnail?: string;
@@ -30,6 +31,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
   const [previewSize, setPreviewSize] = useState<string>("");
   const [metadata, setMetadata] = useState<Record<string, any>>(undefined);
   const [formFields, setFormFields] = useState<Record<string, any>>({});
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const loadPreview = useCallback(
     (path = "") => {
@@ -61,10 +63,29 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
     }
   }, []);
 
+  const applyTools = useCallback(() => {
+    forceUpdate();
+    for (const item of listData) {
+      item.done = false;
+      item.loading = true;
+      window.api.invoke("imageTools:apply", item.path, formFields).then(() => {
+        item.loading = false;
+        item.done = true;
+        forceUpdate();
+      });
+    }
+    forceUpdate();
+  }, [formFields, listData]);
+
   useEffect(() => {
-    setListData(
-      JSON.parse(window.localStorage.getItem("imageTools_listData")) || []
-    );
+    const newListData: ListDataItem[] =
+      JSON.parse(window.localStorage.getItem("imageTools_listData")) || [];
+    for (const item of newListData) {
+      item.loading = false;
+      item.selected = false;
+      item.done = false;
+    }
+    setListData(newListData);
     setFormFields(
       JSON.parse(window.localStorage.getItem("imageTools_formFields")) || {}
     );
@@ -92,7 +113,11 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
   return (
     <Layout id="image-tools">
       <Layout.Sider id="image-form" width={250}>
-        <ImageForm formFields={formFields} setFormFields={setFormFields} />
+        <ImageForm
+          formFields={formFields}
+          setFormFields={setFormFields}
+          applyTools={applyTools}
+        />
       </Layout.Sider>
       <Layout id="image-list">
         <ImageList

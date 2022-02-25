@@ -95,6 +95,12 @@
       .list {
         border: none;
         .ant-list-header{
+          * {
+            &:focus {
+              outline:none;
+              border: none;
+            }
+          }
           width: 100%;
           background: $header-gradient;
           border: 1px solid black;
@@ -122,22 +128,46 @@
           background: #111111;
           border: none;
           cursor: pointer;
-          padding: 4px 10px 4px 50px;
+          padding: 0 10px 0 50px;
           text-align: left;
           position: relative;
           line-height: 23px;
+          height: 30px;
 
+          .path {
+            line-height: 13px;
+          }
+          .icon {
+            color: white;
+            font-size: 18px;
+            vertical-align: middle;
+          }
           img {
-            width: 31px;
-            height: 31px;
+            width: 30px;
+            height: 30px;
             background: black;
             position: absolute;
             top: 0;
             left: 10px;
           }
           .ant-list-item-action{
+            height: 30px;
+            em {
+              display: none;
+            }
             li {
+              height: 30px;
+              line-height: 26px;
+              display: inline;
+            }
+            li:last-child {
               padding-right: 0;
+              position: relative;
+              top: auto;
+              right: auto;
+            }
+            .hidden {
+              display: none;
             }
           }
           &:nth-child(even) {
@@ -151,6 +181,7 @@
            .list-item {
              height: 80px;
              width: 80px;
+             margin-bottom: 0;
              .path {
                display: none;
              }
@@ -163,15 +194,23 @@
            .ant-list-item-action{
              li {
                position: absolute;
-               top: 1px;
-               right: 2px;
+               bottom: 0;
+               top: auto;
+               right: 3px;
+             }
+             li:last-child {
+               position: absolute;
+               top: 0;
+               bottom: auto;
+               right: 3px;
+               .ant-btn-icon-only.ant-btn-sm {
+                 width: 16px;
+                 height: 16px;
+               }
              }
            }
          }
       }
-
-
     }
   }
-
 }

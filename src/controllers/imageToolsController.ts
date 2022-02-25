@@ -11,6 +11,15 @@ import {
 const previewSize = 300;
 
 const imageToolsController = () => {
+  ipcMain.handle(
+    "imageTools:apply",
+    async (_event, path: string, formFields: Record<string, any>) => {
+      return await new Promise((resolve) =>
+        setTimeout(resolve, Math.floor(Math.random() * (3000 - 500 + 1) + 500))
+      );
+    }
+  );
+
   ipcMain.handle("imageTools:getMetadata", async (_event, path: string) => {
     return await getMetadata(sharp(path));
   });

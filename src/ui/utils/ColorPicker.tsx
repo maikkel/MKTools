@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useEffect, useState } from "react";
+import React, { CSSProperties, useCallback, useState } from "react";
 import { ColorResult, SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import "./ColorPicker.scss";
@@ -25,14 +25,14 @@ export default function ColorPicker({ value, onChange }: ColorPickerProps) {
     setColor(newColor.hex);
   };
 
-  const applyColor = useCallback(() => {
-    onChange(color);
-  }, [color, onChange]);
-
-  useEffect(() => {
-    applyColor();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [color]);
+  // const applyColor = useCallback(() => {
+  //   onChange(color);
+  // }, [color, onChange]);
+  //
+  // useEffect(() => {
+  //   applyColor();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [color]);
 
   const styles = reactCSS({
     default: {
