@@ -1,5 +1,7 @@
 import { ipcMain } from "electron";
 import sharp from "sharp";
+import path from "path";
+import fs from "fs";
 import {
   getMetadata,
   makeBase64String,
@@ -13,10 +15,63 @@ const previewSize = 300;
 const imageToolsController = () => {
   ipcMain.handle(
     "imageTools:apply",
-    async (_event, path: string, formFields: Record<string, any>) => {
-      return await new Promise((resolve) =>
-        setTimeout(resolve, Math.floor(Math.random() * (3000 - 500 + 1) + 500))
-      );
+    async (_event, pathString: string, formFields: Record<string, any>) => {
+      // return await new Promise((resolve) =>
+      //   setTimeout(resolve, Math.floor(Math.random() * (3000 - 500 + 1) + 500))
+      // );
+
+      let image = sharp(pathString);
+
+      const origSize = await image.metadata().then((md) => {
+        return {
+          w: md.width,
+          h: md.height,
+        };
+      });
+
+      if (formFields.square) {
+        const maxSize = Math.max(origSize.w, origSize.h);
+
+        image = await square(
+          image,
+          maxSize,
+          formFields.squareFit,
+          formFields.squareBackground
+        )
+          .toBuffer()
+          .then((data) => {
+            return sharp(data);
+          });
+      }
+
+      if (formFields.resize) {
+        const width = parseInt(formFields.width) || origSize.w;
+        const height = parseInt(formFields.height) || origSize.h;
+
+        image = await resize(
+          image,
+          width,
+          height,
+          formFields.resizeFit,
+          formFields.resizeBackground
+        )
+          .toBuffer()
+          .then((data) => {
+            return sharp(data);
+          });
+      }
+
+      const newDir = path.join(path.dirname(pathString), "processed");
+
+      fs.mkdir(newDir, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
+
+      const newPath = path.join(newDir, path.basename(pathString));
+
+      return await image.toFile(newPath).then((info) => {
+        return info;
+      });
     }
   );
 
