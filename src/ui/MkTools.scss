@@ -1,0 +1,22 @@
+.layout {
+  height: 100vh;
+}
+
+.ant-form {
+  .double-input {
+    .ant-form-item-control-input-content {
+      display: flex;
+      .ant-form-item {
+        margin-bottom: 0;
+        .ant-input-number {
+          width: auto;
+        }
+      }
+      .spacer {
+        line-height: 28px;
+        margin: 0 5px;
+      }
+    }
+  }
+}
+

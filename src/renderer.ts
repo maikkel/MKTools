@@ -26,9 +26,17 @@
  * ```
  */
 
-import './index.css';
-
-console.log('👋 This message is being logged by "renderer.js", included via webpack22');
-
-// Add this to the end of the existing file
-import './app';
+declare global {
+  interface Window {
+    api: {
+      test: () => string;
+      send: (channel: string, ...args: any[]) => void;
+      on: (
+        channel: string,
+        listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void
+      ) => Electron.IpcRenderer;
+      invoke: (channel: string, ...args: any[]) => Promise<any>;
+    };
+  }
+}
+import "./ui";

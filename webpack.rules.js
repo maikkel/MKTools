@@ -26,4 +26,48 @@ module.exports = [
       },
     },
   },
+  {
+    test: /\.s[ac]ss$/i,
+    use: [
+      "style-loader",
+      {
+        loader: "css-loader",
+        options: {
+          sourceMap: true,
+        },
+      },
+      {
+        loader: "sass-loader",
+        options: {
+          sourceMap: true,
+        },
+      },
+    ],
+  },
+  {
+    test: /\.less$/i,
+    use: [{
+      loader: "style-loader"
+    }, {
+      loader: "css-loader"
+    }, {
+      loader: "less-loader",
+      options: {
+        lessOptions: {
+          javascriptEnabled: true
+        }
+      }
+    }],
+  },
+  {
+    test: /\.(png|jp(e*)g|svg|gif)$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          name: 'images/[hash]-[name].[ext]',
+        },
+      },
+    ],
+  },
 ];
