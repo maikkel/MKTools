@@ -61,7 +61,10 @@ const imageToolsController = () => {
           });
       }
 
-      const newDir = path.join(path.dirname(pathString), "processed");
+      const newDir = path.join(
+        path.dirname(pathString),
+        formFields.subFolder || "processed"
+      );
 
       fs.mkdir(newDir, { recursive: true }, (err) => {
         if (err) throw err;

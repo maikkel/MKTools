@@ -1,4 +1,12 @@
-import { Button, Checkbox, Divider, Form, InputNumber, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+} from "antd";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ColorPicker from "../../utils/ColorPicker";
 
@@ -115,6 +123,11 @@ export default function ImageForm({
           </Form.Item>
 
           <Divider />
+
+          <Form.Item name="subFolder" label="Subfolder">
+            <Input />
+          </Form.Item>
+
           <Form.Item wrapperCol={{ span: 24 }}>
             <Button type="primary" htmlType="submit" block>
               Apply to all images
