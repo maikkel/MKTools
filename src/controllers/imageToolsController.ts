@@ -12,6 +12,15 @@ import {
 
 const previewSize = 300;
 
+const appendToFilename = (filename: string, string: string) => {
+  const dotIndex = filename.lastIndexOf(".");
+  if (dotIndex == -1) return filename + string;
+  else
+    return (
+      filename.substring(0, dotIndex) + string + filename.substring(dotIndex)
+    );
+};
+
 const imageToolsController = () => {
   ipcMain.handle(
     "imageTools:apply",
@@ -66,11 +75,17 @@ const imageToolsController = () => {
         formFields.subFolder || "processed"
       );
 
+      let fileName = path.basename(pathString);
+
+      if (formFields.fileSuffix) {
+        fileName = appendToFilename(fileName, formFields.fileSuffix);
+      }
+
       fs.mkdir(newDir, { recursive: true }, (err) => {
         if (err) throw err;
       });
 
-      const newPath = path.join(newDir, path.basename(pathString));
+      const newPath = path.join(newDir, fileName);
 
       return await image.toFile(newPath).then((info) => {
         return info;

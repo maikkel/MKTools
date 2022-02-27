@@ -124,7 +124,21 @@ export default function ImageForm({
 
           <Divider />
 
-          <Form.Item name="subFolder" label="Subfolder">
+          <Form.Item
+            name="subFolder"
+            label="Result Subfolder"
+            labelCol={{ span: 12 }}
+            wrapperCol={{ span: 12 }}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="fileSuffix"
+            label="Filename Suffix"
+            labelCol={{ span: 12 }}
+            wrapperCol={{ span: 12 }}
+          >
             <Input />
           </Form.Item>
 
