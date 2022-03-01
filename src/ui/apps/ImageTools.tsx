@@ -127,7 +127,7 @@ export default function ImageTools({ setStatus }: ImageToolsProps) {
           setSelectedPath={setSelectedPath}
         />
       </Layout>
-      <Layout.Sider id="image-info" width={300}>
+      <Layout.Sider id="image-preview" width={300}>
         <ImagePreview
           selectedImageOrig={selectedImageOrig}
           selectedImagePreview={selectedImagePreview}

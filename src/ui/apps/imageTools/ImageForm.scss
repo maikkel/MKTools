@@ -1,0 +1,30 @@
+#image-form {
+  padding: 0 10px;
+  overflow: auto;
+  label {
+    user-select: none;
+  }
+  .main-item {
+    background: $header-gradient;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 0 10px;
+    border-bottom: 1px solid black;
+    label {
+      width: 100%;
+      height: 28px;
+      line-height: 26px;
+    }
+  }
+  form {
+    .apply-box {
+      position: sticky;
+      bottom: 0;
+      left:0;
+      width: inherit;
+      padding: 5px 10px;
+      margin: 20px -10px 0 -10px;
+      background: #111111;
+    }
+  }
+}

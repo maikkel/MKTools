@@ -1,0 +1,41 @@
+#image-preview {
+  overflow: auto;
+  img {
+    max-width: 100%;
+    background: $empty-background-light;
+  }
+  .image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+  &:hover {
+    .image-preview {
+      opacity: 0;
+    }
+  }
+  .image-preview-table {
+    font-size: 11px;
+    margin-bottom: 10px;
+    width: 100%;
+    tr {
+      td {
+        &:nth-child(1) {
+          width: 35%;
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+
+  .title {
+    background: $header-gradient;
+    border-bottom: 1px solid black;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 10px;
+  }
+}

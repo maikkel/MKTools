@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-} from "antd";
+import { Button, Checkbox, Form, Input, InputNumber, Select } from "antd";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ColorPicker from "../../utils/ColorPicker";
 
@@ -122,31 +114,31 @@ export default function ImageForm({
             <ColorPicker />
           </Form.Item>
 
-          <Divider />
+          <div className="apply-box">
+            <Form.Item
+              name="subFolder"
+              label="Result Subfolder"
+              labelCol={{ span: 12 }}
+              wrapperCol={{ span: 12 }}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item
-            name="subFolder"
-            label="Result Subfolder"
-            labelCol={{ span: 12 }}
-            wrapperCol={{ span: 12 }}
-          >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              name="fileSuffix"
+              label="Filename Suffix"
+              labelCol={{ span: 12 }}
+              wrapperCol={{ span: 12 }}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item
-            name="fileSuffix"
-            label="Filename Suffix"
-            labelCol={{ span: 12 }}
-            wrapperCol={{ span: 12 }}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" block>
-              Apply to all images
-            </Button>
-          </Form.Item>
+            <Form.Item wrapperCol={{ span: 24 }}>
+              <Button type="primary" htmlType="submit" block>
+                Apply to all images
+              </Button>
+            </Form.Item>
+          </div>
         </Form>
       )}
     </>
