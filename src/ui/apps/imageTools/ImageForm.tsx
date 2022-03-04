@@ -116,6 +116,30 @@ export default function ImageForm({
 
           <div className="apply-box">
             <Form.Item
+              label="File Type"
+              name="fileType"
+              labelCol={{ span: 12 }}
+              wrapperCol={{ span: 12 }}
+            >
+              <Select>
+                <Select.Option value="">Keep</Select.Option>
+                <Select.Option value="jpeg">JPEG</Select.Option>
+                <Select.Option value="png">PNG</Select.Option>
+                <Select.Option value="tiff">TIFF</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              label="JPEG Quality"
+              name="quality"
+              labelCol={{ span: 12 }}
+              wrapperCol={{ span: 12 }}
+              hidden={formFields?.fileType !== "jpeg"}
+            >
+              <InputNumber min="1" max="100" />
+            </Form.Item>
+
+            <Form.Item
               name="subFolder"
               label="Result Subfolder"
               labelCol={{ span: 12 }}

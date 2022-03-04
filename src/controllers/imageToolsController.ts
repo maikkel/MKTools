@@ -77,6 +77,32 @@ const imageToolsController = () => {
 
       let fileName = path.basename(pathString);
 
+      if (formFields.fileType) {
+        console.log("FileType Set", formFields.fileType);
+        let extension;
+        switch (formFields.fileType) {
+          case "jpeg":
+            image = image.jpeg({
+              quality: formFields.quality,
+            });
+            extension = "jpg";
+            break;
+          case "png":
+            image = image.png();
+            extension = "png";
+            break;
+          case "tiff":
+            image = image.tiff();
+            extension = "tiff";
+            break;
+        }
+
+        if (extension) {
+          fileName = fileName.split(".")[0] + "." + extension;
+        }
+        console.log("FileName", fileName);
+      }
+
       if (formFields.fileSuffix) {
         fileName = appendToFilename(fileName, formFields.fileSuffix);
       }
