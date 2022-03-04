@@ -114,6 +114,46 @@ export default function ImageForm({
             <ColorPicker />
           </Form.Item>
 
+          <Form.Item
+            name="rotate"
+            valuePropName="checked"
+            className="main-item"
+          >
+            <Checkbox>Rotate/Flip</Checkbox>
+          </Form.Item>
+
+          <Form.Item
+            hidden={!formFields?.rotate}
+            labelCol={{ span: 0 }}
+            wrapperCol={{ span: 15, offset: 9 }}
+          >
+            <Form.Item
+              name="flop"
+              valuePropName="checked"
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 8 }}
+              noStyle
+            >
+              <Checkbox>Flip Y</Checkbox>
+            </Form.Item>
+            <Form.Item
+              name="flip"
+              valuePropName="checked"
+              labelCol={{ span: 14 }}
+              wrapperCol={{ span: 8 }}
+              noStyle
+            >
+              <Checkbox>Flip X</Checkbox>
+            </Form.Item>
+          </Form.Item>
+          <Form.Item
+            label="Rotate:"
+            name="rotateDegrees"
+            hidden={!formFields?.rotate}
+          >
+            <InputNumber />
+          </Form.Item>
+
           <div className="apply-box">
             <Form.Item
               label="File Type"

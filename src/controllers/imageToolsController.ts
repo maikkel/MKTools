@@ -70,6 +70,20 @@ const imageToolsController = () => {
           });
       }
 
+      if (formFields.rotate) {
+        image = image.flip(formFields.flip).flop(formFields.flop);
+
+        image = await image.toBuffer().then((data) => {
+          return sharp(data);
+        });
+
+        image = image.rotate(formFields.rotateDegrees);
+
+        image = await image.toBuffer().then((data) => {
+          return sharp(data);
+        });
+      }
+
       const newDir = path.join(
         path.dirname(pathString),
         formFields.subFolder || "processed"
@@ -98,7 +112,7 @@ const imageToolsController = () => {
         }
 
         if (extension) {
-          fileName = fileName.split(".")[0] + "." + extension;
+          fileName = `${fileName.split(".")[0]}.${extension}`;
         }
         console.log("FileName", fileName);
       }
@@ -222,6 +236,20 @@ const imageToolsController = () => {
           .then((data) => {
             return sharp(data);
           });
+      }
+
+      if (formFields.rotate) {
+        image = image.flip(formFields.flip).flop(formFields.flop);
+
+        image = await image.toBuffer().then((data) => {
+          return sharp(data);
+        });
+
+        image = image.rotate(formFields.rotateDegrees);
+
+        image = await image.toBuffer().then((data) => {
+          return sharp(data);
+        });
       }
 
       return {
